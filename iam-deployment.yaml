@@ -1,0 +1,45 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: iam
+  namespace: iam
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: iam
+  strategy:
+    rollingUpdate:
+      maxSurge: 0
+      maxUnavailable: 1
+  template:
+    metadata:
+      labels:
+        app: iam
+    spec:
+      containers:
+      - name: iam
+        image: quay.io/airlock/iam:8.2.3
+        env:
+        - name: IAM_JAVA_OPTS
+          value: "-XX:MaxRAMPercentage=50"
+        - name: IAM_MODULES
+          value: "adminapp"
+        - name: IAM_LOG_LEVEL
+          value: ""
+        - name: TZ
+          value: "Europe/Berlin"
+        resources:
+          limits:
+            memory: "4Gi"
+        volumeMounts:
+        - name: localtime
+          mountPath: /etc/localtime
+          readOnly: true
+      volumes:
+      - name: localtime
+        hostPath:
+          path: /etc/localtime
+          type: File
+      imagePullSecrets:
+      - name: alsbraun-pull-secret
