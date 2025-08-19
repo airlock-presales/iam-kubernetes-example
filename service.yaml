@@ -1,0 +1,15 @@
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: iam-service
+  annotations:
+    traefik.ingress.kubernetes.io/service.serversscheme: https
+    traefik.ingress.kubernetes.io/service.serverstransport: iam-iam-insecure@kubernetescrd
+spec:
+  selector:
+    app: iam
+  ports:
+  - protocol: TCP
+    port: 8443
+    targetPort: 8443
