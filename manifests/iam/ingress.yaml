@@ -3,6 +3,9 @@ apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
   name: iam
+  #annotations:
+  #  traefik.ingress.kubernetes.io/service.serversscheme: https
+  #  traefik.ingress.kubernetes.io/service.serverstransport: iam-iam-insecure@kubernetescrd
 spec:
   rules:
   - host: "iam-127-0-0-1.nip.io"
